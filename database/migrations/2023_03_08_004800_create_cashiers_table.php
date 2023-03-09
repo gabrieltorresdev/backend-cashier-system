@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('cashiers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('role_id')->references('id')->on('roles');
-            // $table->string('username')->unique();
-            $table->string('name');
-            $table->string('password')->nullable();
+            $table->foreignUuid('user_id')->references('id')->on('users');
+            // $table->float('total_sold_amount')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('cashiers');
     }
 };
