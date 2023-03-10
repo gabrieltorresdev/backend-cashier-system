@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\GetAuthenticatedUserController;
+use App\Http\Controllers\Auth\GetAuthenticableUsersController;
+use App\Http\Controllers\Auth\HandleLoginController;
+use App\Http\Controllers\Auth\HandleLogoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('guest')->group(function () {
+    Route::get('/users', GetAuthenticableUsersController::class)->name('users');
+    Route::post('/login', HandleLoginController::class)->name('login');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/user', GetAuthenticatedUserController::class)->name('user');
+    Route::post('/logout', HandleLogoutController::class)->name('logout');
 });
