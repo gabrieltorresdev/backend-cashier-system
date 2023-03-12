@@ -6,16 +6,21 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Stock extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'name'
+        'quantity'
     ];
 
-    public function users()
+    public function product()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Product::class);
+    }
+
+    public function stockType()
+    {
+        return $this->belongsTo(StockType::class);
     }
 }

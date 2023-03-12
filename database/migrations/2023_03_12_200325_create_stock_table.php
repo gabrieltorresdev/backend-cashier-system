@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name')->unique();
+            $table->foreignUuid('product_id')->references('id')->on('products');
+            $table->foreignUuid('stock_type_id')->references('id')->on('stock_types');
+            $table->decimal('quantity', 10, 2);
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('stocks');
     }
 };

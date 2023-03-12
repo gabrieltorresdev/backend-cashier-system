@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\StockType>
  */
-class RoleFactory extends Factory
+class StockTypeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->domainName()
+            'name' => fake()->word(),
+            'type' => fake()->randomElement(['float', 'integer']),
         ];
     }
 }

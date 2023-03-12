@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->string('name');
             $table->float('cost');
-            $table->bigInteger('stock_quantity');
             $table->text('description')->nullable();
             $table->timestamps();
         });

@@ -2,14 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Transaction;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Cashier>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
  */
-class CashierFactory extends Factory
+class AccessPermissionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +17,8 @@ class CashierFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->pluck('id')->first()
+            'name' => fake()->userName(),
+            'permissions' => "[]"
         ];
     }
 }

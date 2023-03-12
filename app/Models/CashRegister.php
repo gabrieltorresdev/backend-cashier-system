@@ -6,23 +6,23 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class CashRegister extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'type',
-        'value',
-        'note',
+        'initial_balance',
+        'current_balance',
+        'date_time'
     ];
 
-    public function cashRegister()
+    public function user()
     {
-        return $this->belongsTo(CashRegister::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function products()
+    public function transactions()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->hasMany(Transaction::class);
     }
 }

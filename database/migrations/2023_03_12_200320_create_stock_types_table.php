@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('stock_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cash_register_id')->references('id')->on('cash_registers');
+            $table->string('name');
             $table->string('type');
-            $table->decimal('value', 10, 2);
-            $table->text('note')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('stock_types');
     }
 };

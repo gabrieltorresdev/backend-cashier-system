@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cashiers', function (Blueprint $table) {
+        Schema::create('cash_registers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users');
-            // $table->float('total_sold_amount')->nullable();
+            $table->dateTime('date_time');
+            $table->decimal('initial_balance', 10, 2);
+            $table->decimal('current_balance', 10, 2);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cashiers');
+        Schema::dropIfExists('cash_registers');
     }
 };

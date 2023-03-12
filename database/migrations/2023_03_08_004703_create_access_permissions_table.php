@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('access_permissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('cash_register_id')->references('id')->on('cash_registers');
-            $table->string('type');
-            $table->decimal('value', 10, 2);
-            $table->text('note')->nullable();
+            $table->string('name')->unique();
+            $table->text('permissions');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('access_permissions');
     }
 };

@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
+use App\Models\AccessPermission;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -21,10 +20,12 @@ class UserFactory extends Factory
         $name = fake()->name();
 
         return [
-            // 'username' => str($name)->slug(''),
             'name' => $name,
-            'password' => null,
-            'role_id' => Role::all()->random()
+            'email' => fake()->safeEmail(),
+            'username' => str($name)->slug('.'),
+            'password' => bcrypt('password'),
+            'activated' => false,
+            'access_permission_id' => AccessPermission::all()->random(),
         ];
     }
 
@@ -34,7 +35,7 @@ class UserFactory extends Factory
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
-            'password' => null,
+            'activated' => false,
         ]);
     }
 }

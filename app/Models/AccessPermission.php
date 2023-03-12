@@ -6,19 +6,17 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class AccessPermission extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'code',
         'name',
-        'cost',
-        'description'
+        'permissions'
     ];
 
-    public function transactions()
+    public function users()
     {
-        return $this->belongsToMany(Transaction::class);
+        return $this->hasMany(User::class);
     }
 }

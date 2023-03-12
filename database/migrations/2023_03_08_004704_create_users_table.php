@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('role_id')->references('id')->on('roles');
-            // $table->string('username')->unique();
+            $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->string('name');
-            $table->string('password')->nullable();
+            $table->string('password');
+            $table->boolean('activated')->default(false);
+            $table->foreignUuid('access_permission_id')->references('id')->on('access_permissions');
             $table->timestamps();
         });
     }

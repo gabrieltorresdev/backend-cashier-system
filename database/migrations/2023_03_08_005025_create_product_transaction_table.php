@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('product_transaction', function (Blueprint $table) {
             $table->foreignUuid('transaction_id')
                 ->references('id')
-                ->on('transactions')
-                ->onDelete('cascade');
+                ->on('transactions');
             $table->foreignUuid('product_id')
                 ->references('id')
-                ->on('products')
-                ->onDelete('cascade');
+                ->on('products');
         });
     }
 

@@ -16,35 +16,6 @@ class User extends Authenticatable implements JWTSubject
     use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'password'
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password'
-    ];
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-    public function cashier()
-    {
-        return $this->hasOne(Cashier::class);
-    }
-    
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -62,5 +33,37 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'username',
+        'activated',
+        'password'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password'
+    ];
+
+    public function accessPermission()
+    {
+        return $this->belongsTo(AccessPermission::class);
+    }
+
+    public function cashRegister()
+    {
+        return $this->hasOne(CashRegister::class);
     }
 }

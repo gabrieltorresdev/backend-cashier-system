@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
+use App\Models\Stock;
+use App\Models\StockType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,10 +21,22 @@ class ProductFactory extends Factory
     {
         return [
             'code' => fake()->randomNumber(4),
-            'name' => fake()->domainName(),
+            'name' => fake()->userName(),
             'cost' => fake()->randomFloat(2, 10, 100),
-            'stock_quantity' => fake()->numberBetween(0, 20),
             'description' => fake()->paragraph(2),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Product $product) {
+            $stockType = StockType::inRandomOrder()->first();
+
+            Stock::create([
+                'quantity' => $stockType->type === 'float' ? fake()->randomFloat(1, 0, 100) : fake()->randomFloat(0, 0, 100),
+                'product_id' => $product->id,
+                'stock_type_id' => $stockType->id
+            ]);
+        });
     }
 }

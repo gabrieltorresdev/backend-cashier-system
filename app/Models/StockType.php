@@ -6,21 +6,17 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cashier extends Model
+class StockType extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'total_sold_amount'
+        'name',
+        'type'
     ];
 
-    public function user()
+    public function stock()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Stock::class);
     }
 }
