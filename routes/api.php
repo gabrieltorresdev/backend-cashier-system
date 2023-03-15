@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\GetAuthenticatedUserController;
-use App\Http\Controllers\Auth\GetAuthenticableUsersController;
 use App\Http\Controllers\Auth\HandleLoginController;
 use App\Http\Controllers\Auth\HandleLogoutController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/users', GetAuthenticableUsersController::class)->name('users');
     Route::post('/login', HandleLoginController::class)->name('login');
 });
 
