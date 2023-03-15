@@ -18,6 +18,6 @@ class EnsureNotAuthenticated
         if (auth()->guest())
             return $next($request);
 
-        return response_no([], "Não autorizado.", 403);
+        return response_no(403, [], __("custom.unauthorized"));
     }
 }
