@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 class HandleLoginController extends Controller
@@ -16,44 +16,48 @@ class HandleLoginController extends Controller
      */
     public function __invoke(Request $request)
     {
-        DB::beginTransaction();
-
         try {
-            $this->validate($request, [
-                'user_id' => ['required', 'string', 'exists:users,id'],
-                'password' => ['required', 'string']
+            $login = $request->get('login');
+
+            $isEmail = is_email($login);
+
+            $field = $isEmail ? 'email' : 'username';
+
+            $request->merge([$field => $login]);
+
+            $request->validate([
+                'username' => 'required_without:email|string|max:255',
+                'email' => 'required_without:username|string|email|max:255',
+                'password' => 'required|string'
             ]);
 
-            $user = User::find($request->get('user_id'));
+            $user = User::query()->firstWhere($field, '=', $login);
 
-            if (is_null($user->password)) {
-                $this->validate($request, [
-                    'password' => ['required', 'string', 'confirmed'],
+            if ($user) {
+                if (!$user->activated) {
+                    $status = Password::sendResetLink(['email' => $user->email]);
+
+                    if ($status === Password::RESET_LINK_SENT)
+                        return response_no(401, [], "Enviamos instruções para o e-mail cadastrado para ativação do usuário.");
+
+                    return response_no(500, [], "Não foi possível enviar o email para ativação do usuário, tente novamente mais tarde.");
+                }
+
+                $authToken = auth()->attempt([
+                    'email' => $user->email,
+                    'password' => $request->get('password')
                 ]);
 
-                $user->password = bcrypt($request->get('password'));
-
-                $user->update();
-
-                DB::commit();
+                if ($authToken)
+                    return response_ok(200, [
+                        'token' => $authToken
+                    ]);
             }
 
-            $token = auth()->attempt([
-                'id' => $request->get('user_id'),
-                'password' => $request->get('password')
-            ]);
-
-            if ($token)
-                return response_ok(200, [
-                    'token' => $token
-                ]);
-
-            throw new ValidationException("Usuário ou senha inválidos");
+            throw ValidationException::withMessages(["login" => "Credenciais inválidas."]);
         } catch (ValidationException $e) {
-            DB::rollBack();
             return response_no(422, $e->errors());
         } catch (Exception $e) {
-            DB::rollBack();
             return response_no(500, [], $e->getMessage() . " -- " . $e->getLine());
         }
     }
