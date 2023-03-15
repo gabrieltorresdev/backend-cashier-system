@@ -12,9 +12,6 @@ class GetAuthenticatedUserController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if ($request->user())
-            return response_ok(['user' => $request->user()]);
-
-        return response_no([], 'Não autorizado.', 403);
+        return response_ok(200, ['user' => $request->user()]);
     }
 }

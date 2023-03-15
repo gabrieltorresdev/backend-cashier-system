@@ -44,17 +44,17 @@ class HandleLoginController extends Controller
             ]);
 
             if ($token)
-                return response_ok([
+                return response_ok(200, [
                     'token' => $token
                 ]);
 
-            throw new Exception("Usuário ou senha inválidos");
+            throw new ValidationException("Usuário ou senha inválidos");
         } catch (ValidationException $e) {
             DB::rollBack();
-            return response_no($e->errors(), 422);
+            return response_no(422, $e->errors());
         } catch (Exception $e) {
             DB::rollBack();
-            return response_no([], $e->getMessage() . " -- " . $e->getLine());
+            return response_no(500, [], $e->getMessage() . " -- " . $e->getLine());
         }
     }
 }

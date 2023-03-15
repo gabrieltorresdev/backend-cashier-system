@@ -4,7 +4,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 if (!function_exists('response_ok')) {
-    function response_ok(array $data = [], string $message = "", int $code = 200): JsonResponse
+    function response_ok(int $code = 200, array $data = [], string $message = ""): JsonResponse
     {
         $response = [
             'data' => $data,
@@ -16,7 +16,7 @@ if (!function_exists('response_ok')) {
 }
 
 if (!function_exists('response_no')) {
-    function response_no(array $data = [], string $message = "", int $code = 500): JsonResponse
+    function response_no(int $code = 500, array $data = [], string $message = ""): JsonResponse
     {
         if (empty($message))
             $message = 'Ocorreu um erro ao finalizar sua requisição.';

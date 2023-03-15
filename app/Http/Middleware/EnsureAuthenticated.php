@@ -21,7 +21,7 @@ class EnsureAuthenticated
             JWTAuth::parseToken()->authenticate();
             return $next($request);
         } catch (JWTException $e) {
-            return response_no([], "Não autorizado.", 403);
+            return response_no(403, [], "Não autorizado.");
         }
     }
 }

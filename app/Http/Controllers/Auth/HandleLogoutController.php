@@ -17,9 +17,9 @@ class HandleLogoutController extends Controller
         try {
             JWTAuth::invalidate(JWTAuth::parseToken());
 
-            return response_ok([], "", 204);
+            return response_ok(204);
         } catch (JWTException $e) {
-            return response_no([], $e->getMessage() . " -- " . $e->getLine());
+            return response_no(500, [], $e->getMessage() . " -- " . $e->getLine());
         }
     }
 }
