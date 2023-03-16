@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\HandleLoginController;
 use App\Http\Controllers\Auth\HandleLogoutController;
 use App\Http\Controllers\Auth\HandleUserActivationController;
 use App\Http\Controllers\Dashboard\GetDashboardDataController;
+use App\Http\Middleware\EnsureUserIsActivated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,13 +20,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('guest')->group(function () {
-    Route::post('/handle-login', HandleLoginController::class)->name('login.handle');
+    Route::post('/login', HandleLoginController::class)->name('login.handle');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/get-authenticated-user', GetAuthenticatedUserController::class)->name('user.authenticated');
-    Route::patch('/handle-user-activation', HandleUserActivationController::class)->name('user.activation.handle');
-    Route::post('/handle-logout', HandleLogoutController::class)->name('logout.handle');
-    
-    Route::get('/get-dashboard-data', GetDashboardDataController::class)->name('dashboard.data');
+    Route::patch('/user-activation', HandleUserActivationController::class)->name('user.activation.handle');
+    Route::post('/logout', HandleLogoutController::class)->name('logout.handle');
+
+    Route::get('/authenticated-user', GetAuthenticatedUserController::class)->name('user.authenticated');
+
+    Route::middleware(EnsureUserIsActivated::class)->group(function () {
+        Route::get('/dashboard-data', GetDashboardDataController::class)->name('dashboard.data');
+    });
 });

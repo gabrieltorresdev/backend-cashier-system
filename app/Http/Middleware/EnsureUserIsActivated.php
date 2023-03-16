@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureAuthenticated
+class EnsureUserIsActivated
 {
     /**
      * Handle an incoming request.
@@ -14,8 +14,8 @@ class EnsureAuthenticated
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {   
-        if (auth()->check()) return $next($request);
+    {
+        if (auth()->user()->activated) return $next($request);
         
         return response_no(403, [], __("custom.unauthorized"));
     }
