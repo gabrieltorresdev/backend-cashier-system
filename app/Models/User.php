@@ -63,9 +63,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(AccessPermission::class);
     }
 
-    public function cashRegister()
+    public function cashRegisters()
     {
-        return $this->hasOne(CashRegister::class);
+        return $this->hasMany(CashRegister::class);
     }
 
     /**
@@ -81,5 +81,22 @@ class User extends Authenticatable implements JWTSubject
                 ->first()
                 ?->toArray()
         );
+    }
+
+    public function getOpenedCashRegister(): Collection
+    {
+        $return = collect(
+            $this->cashRegisters
+                ->where('opened', '=', true)
+                ->last()
+                ?->toArray()
+        );
+
+        return $return->only([
+            'id',
+            'date_time',
+            'initial_balance',
+            'current_balance'
+        ]);
     }
 }
