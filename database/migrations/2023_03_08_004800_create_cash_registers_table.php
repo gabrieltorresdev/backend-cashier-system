@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users');
             $table->dateTime('date_time');
+            $table->boolean('opened')->default(false);
             $table->decimal('initial_balance', 10, 2);
             $table->decimal('current_balance', 10, 2);
             $table->timestamps();
