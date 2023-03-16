@@ -6,6 +6,9 @@ use Illuminate\Support\Arr;
 if (!function_exists('response_ok')) {
     function response_ok(int $code = 200, array $data = [], string $message = ""): JsonResponse
     {
+        if (empty($message))
+            $message = __('custom.response-success-message');
+
         $response = [
             'message' => $message,
             'data' => $data
@@ -40,9 +43,9 @@ if (!function_exists('response_no')) {
 if (!function_exists('is_email')) {
     /**
      * Verify if given string is an valid email
-     * @param string $string
+     * @param ?string $string
      */
-    function is_email(string $string): bool
+    function is_email(?string $string): bool
     {
         return filter_var($string, FILTER_VALIDATE_EMAIL);
     }
