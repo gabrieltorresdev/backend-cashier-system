@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/authenticated-user', GetAuthenticatedUserController::class)->name('user.authenticated');
 
     Route::middleware(EnsureUserIsActivated::class)->group(function () {
-        Route::get('/dashboard-data', GetDashboardDataController::class)->name('dashboard.data');
+        Route::get('/dashboard', GetDashboardDataController::class)->name('dashboard');
     });
 });
+
+// TODO: Create transaction
+// TODO: Add products to transaction
+// TODO: List all products in stock
+// TODO: Admin user registration

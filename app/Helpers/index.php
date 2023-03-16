@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Database\Eloquent\Collection as DBCollection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 
@@ -8,7 +11,7 @@ if (!function_exists('response_ok')) {
     {
         if (empty($message))
             $message = __('custom.response-success-message');
-            
+
         $response = [
             'message' => $message,
             'data' => camelizeArrayKeys($data)
@@ -85,10 +88,16 @@ if (!function_exists('camelizeArrayKeys')) {
         foreach ($array as $key => $value) {
             $camelized[camelize($key)] = $value;
 
+            if (
+                $value instanceof DBCollection
+                || $value instanceof Collection
+                || $value instanceof Model
+            ) $value = $value->toArray();
+
             if (is_array($value))
                 $camelized[camelize($key)] = camelizeArrayKeys($value);
         }
-            
+
         return $camelized;
     }
 }
@@ -104,7 +113,13 @@ if (!function_exists('snakelizeArrayKeys')) {
 
         foreach ($array as $key => $value) {
             $snakelized[snakelize($key)] = $value;
-            
+
+            if (
+                $value instanceof DBCollection
+                || $value instanceof Collection
+                || $value instanceof Model
+            ) $value = $value->toArray();
+
             if (is_array($value))
                 $snakelized[snakelize($key)] = snakelizeArrayKeys($value);
         }
