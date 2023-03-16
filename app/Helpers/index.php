@@ -8,10 +8,10 @@ if (!function_exists('response_ok')) {
     {
         if (empty($message))
             $message = __('custom.response-success-message');
-
+            
         $response = [
             'message' => $message,
-            'data' => $data
+            'data' => camelizeArrayKeys($data)
         ];
 
         return response()->json($response, $code);
@@ -27,12 +27,12 @@ if (!function_exists('response_no')) {
         $response = [
             'message' => $message,
             'data' => $data,
-            'errors' => $errors
+            'errors' => camelizeArrayKeys($errors)
         ];
 
         if ($code === 422) {
             Arr::set($response, 'errors', [
-                'fields' => $errors
+                'fields' => camelizeArrayKeys($errors)
             ]);
         }
 
@@ -48,5 +48,67 @@ if (!function_exists('is_email')) {
     function is_email(?string $string): bool
     {
         return filter_var($string, FILTER_VALIDATE_EMAIL);
+    }
+}
+
+if (!function_exists('camelize')) {
+    /**
+     * Turn given string in camelCase
+     * @param string $string
+     */
+    function camelize(string $string): string
+    {
+        return str($string)->camel()->value();
+    }
+}
+
+if (!function_exists('snakelize')) {
+    /**
+     * Turn given string in snake_case
+     * @param string $string
+     */
+    function snakelize(string $string): string
+    {
+        return str($string)->snake()->value();
+    }
+}
+
+if (!function_exists('camelizeArrayKeys')) {
+    /**
+     * Turn given array keys into camelCase
+     * @param array $array
+     */
+    function camelizeArrayKeys(array $array): array
+    {
+        $camelized = [];
+
+        foreach ($array as $key => $value) {
+            $camelized[camelize($key)] = $value;
+
+            if (is_array($value))
+                $camelized[camelize($key)] = camelizeArrayKeys($value);
+        }
+            
+        return $camelized;
+    }
+}
+
+if (!function_exists('snakelizeArrayKeys')) {
+    /**
+     * Turn given array keys into snake_case
+     * @param array $array
+     */
+    function snakelizeArrayKeys(array $array): array
+    {
+        $snakelized = [];
+
+        foreach ($array as $key => $value) {
+            $snakelized[snakelize($key)] = $value;
+            
+            if (is_array($value))
+                $snakelized[snakelize($key)] = snakelizeArrayKeys($value);
+        }
+
+        return $snakelized;
     }
 }
