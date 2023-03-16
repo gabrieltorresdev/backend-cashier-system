@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -65,5 +66,20 @@ class User extends Authenticatable implements JWTSubject
     public function cashRegister()
     {
         return $this->hasOne(CashRegister::class);
+    }
+
+    /**
+     * Finds the user by the given email or username
+     * @param string $emailOrUsername
+     * @return Collection
+     */
+    public static function findByEmailOrUsername(string $emailOrUsername): Collection
+    {
+        return collect(
+            self::where('email', '=', $emailOrUsername)
+                ->orWhere('username', '=', $emailOrUsername)
+                ->first()
+                ?->toArray()
+        );
     }
 }

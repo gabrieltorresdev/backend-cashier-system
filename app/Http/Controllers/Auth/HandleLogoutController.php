@@ -19,7 +19,7 @@ class HandleLogoutController extends Controller
 
             return response_ok(204);
         } catch (JWTException $e) {
-            return response_no(500, [], $e->getMessage() . " -- " . $e->getLine());
+            return response_no(message: $e->getMessage());
         }
     }
 }
