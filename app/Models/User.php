@@ -46,6 +46,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'username',
         'activated',
+        'verification_code',
         'password'
     ];
 
@@ -55,7 +56,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $hidden = [
-        'password'
+        'password',
+        'verification_code'
     ];
 
     public function accessPermission()
@@ -97,6 +99,13 @@ class User extends Authenticatable implements JWTSubject
             'date_time',
             'initial_balance',
             'current_balance'
+        ]);
+    }
+
+    public function activate(): bool
+    {
+        return $this->update([
+            'activated' => true
         ]);
     }
 }

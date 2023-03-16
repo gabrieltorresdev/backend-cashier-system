@@ -16,6 +16,20 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory(2)->create();
 
+        \App\Models\User::factory()->create([
+            'name' => 'Admin User',
+            'username' => 'admin',
+            'activated' => true,
+            'email' => 'admin@email.com',
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Normal User',
+            'username' => 'user',
+            'activated' => true,
+            'email' => 'user@email.com',
+        ]);
+
         \App\Models\CashRegister::factory(2)->create();
 
         \App\Models\StockType::factory(2)->create();
@@ -23,10 +37,5 @@ class DatabaseSeeder extends Seeder
         \App\Models\Product::factory(2)->create();
 
         \App\Models\Transaction::factory(2)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

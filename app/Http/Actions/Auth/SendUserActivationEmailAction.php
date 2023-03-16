@@ -2,7 +2,8 @@
 
 namespace App\Http\Actions\Auth;
 
-use Illuminate\Support\Facades\Password;
+use App\Models\User;
+use App\Notifications\SendActivationCodeEmail;
 
 class SendUserActivationEmailAction
 {
@@ -10,10 +11,14 @@ class SendUserActivationEmailAction
     {
     }
 
-    public static function execute(string $email)
+    public static function execute(string $email): void
     {
-        $status = Password::sendResetLink(['email' => $email]);
+        $user = User::query()->firstWhere('email', '=', $email);
+        
+        $user->verification_code = verification_token();
 
-        return $status === Password::RESET_LINK_SENT;
+        $user->update();
+
+        $user->notify(new SendActivationCodeEmail);
     }
 }

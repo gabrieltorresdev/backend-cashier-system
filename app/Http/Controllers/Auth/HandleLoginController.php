@@ -20,27 +20,30 @@ class HandleLoginController extends Controller
                 'password' => 'required|string'
             ]);
 
-            $user = User::findByEmailOrUsername($request->get('login'));
+            $token = AttemptLoginAction::execute(
+                $request->get('login'),
+                $request->get('password')
+            );
 
-            if ($user->isNotEmpty()) {
-                if (!$user->get('activated')) {
-                    if (SendUserActivationEmailAction::execute($user->get('email')))
-                        return response_ok(message: __("custom.user-activation-email-sent"));
-    
-                    throw new Exception(message: __("custom.user-activation-email-not-sent"));
-                }
+            if (!$token)
+                throw ValidationException::withMessages([
+                    "login" => __("custom.invalid-credentials")
+                ]);
 
-                $token = AttemptLoginAction::execute(
-                    $user->get('email'),
-                    $request->get('password')
-                );
-    
-                if ($token) return response_ok(data: ['token' => $token]);
-            }
+            $isUserActivated = auth()->user()->activated;
 
-            throw ValidationException::withMessages([
-                "login" => __("custom.invalid-credentials")
-            ]);
+            if (!$isUserActivated)
+                SendUserActivationEmailAction::execute(auth()->user()->email);
+
+            return response_ok(
+                data: [
+                    'token' => $token,
+                    'activated' => $isUserActivated
+                ],
+                message: !$isUserActivated
+                    ? __("custom.user-activation-email-sent")
+                    : ""
+            );
         } catch (ValidationException $e) {
             return response_no(422, $e->errors());
         } catch (Exception $e) {

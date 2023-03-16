@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\GetAuthenticatedUserController;
 use App\Http\Controllers\Auth\HandleLoginController;
 use App\Http\Controllers\Auth\HandleLogoutController;
+use App\Http\Controllers\Auth\HandleUserActivationController;
 use App\Http\Controllers\Dashboard\GetDashboardDataController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/get-authenticated-user', GetAuthenticatedUserController::class)->name('user.authenticated');
-    Route::get('/get-dashboard-data', GetDashboardDataController::class)->name('dashboard.data');
+    Route::patch('/handle-user-activation', HandleUserActivationController::class)->name('user.activation.handle');
     Route::post('/handle-logout', HandleLogoutController::class)->name('logout.handle');
+    
+    Route::get('/get-dashboard-data', GetDashboardDataController::class)->name('dashboard.data');
 });

@@ -112,3 +112,16 @@ if (!function_exists('snakelizeArrayKeys')) {
         return $snakelized;
     }
 }
+
+if (!function_exists('verification_token')) {
+    /**
+     * Create a new token for verification purposes
+     * @param int $length
+     */
+    function verification_token(int $length = 8): string
+    {
+        $string = \Illuminate\Support\Str::random($length);
+
+        return str($string)->upper()->value();
+    }
+}
