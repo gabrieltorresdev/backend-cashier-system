@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\{
     OpenCashRegisterController,
     CloseCashRegisterController,
     GetCashRegisterTransactionsController,
+    UpdateTransactionController
 };
 
 Route::middleware('guest')->group(function () {
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(EnsureUserIsActivated::class)->group(function () {
         Route::get('/opened-cash-register', GetCurrentOpenedCashRegisterController::class);
         Route::get('/transactions', GetCashRegisterTransactionsController::class);
+        Route::put('/transactions', UpdateTransactionController::class)->middleware('throttle:1,0.18');
         Route::patch('/cash-register/close', CloseCashRegisterController::class);
         Route::patch('/cash-register/open', OpenCashRegisterController::class);
     });

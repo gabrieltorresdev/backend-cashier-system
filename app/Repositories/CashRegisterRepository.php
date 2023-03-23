@@ -90,4 +90,17 @@ class CashRegisterRepository extends BaseRepository
             0
         );
     }
+
+    /**
+     * @param array $data
+     * @return false|string Id da transação
+     */
+    public function createTransaction(array $data): false|string
+    {
+        $transaction = $this->model->transactions()->create($data);
+
+        if ($transaction?->id) return $transaction->id;
+
+        return false;
+    }
 }
