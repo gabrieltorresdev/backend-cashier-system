@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\GetAuthenticatedUserController;
-use App\Http\Controllers\Auth\HandleLoginController;
-use App\Http\Controllers\Auth\HandleLogoutController;
-use App\Http\Controllers\Auth\HandleUserActivationController;
-use App\Http\Controllers\Dashboard\GetDashboardDataController;
 use App\Http\Middleware\EnsureUserIsActivated;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{
@@ -40,7 +35,5 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// TODO: Create transaction
-// TODO: Add products to transaction
 // TODO: List all products in stock
 // TODO: Admin user registration
