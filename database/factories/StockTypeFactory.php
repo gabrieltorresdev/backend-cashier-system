@@ -18,7 +18,7 @@ class StockTypeFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'type' => fake()->randomElement(['float', 'integer']),
+            'decimals' => fake()->randomFloat(2, 0, 2),
         ];
     }
 }

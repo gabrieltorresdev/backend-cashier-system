@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('stock_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('type');
+            $table->integer('decimals');
             $table->timestamps();
         });
     }

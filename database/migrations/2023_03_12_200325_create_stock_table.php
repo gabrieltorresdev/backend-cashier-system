@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('product_id')->references('id')->on('products');
             $table->foreignUuid('stock_type_id')->references('id')->on('stock_types');
-            $table->decimal('quantity', 10, 2);
+            $table->unsignedFloat('quantity', 8, 4);
             $table->timestamps();
         });
     }

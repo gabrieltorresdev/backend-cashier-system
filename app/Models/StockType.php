@@ -12,7 +12,7 @@ class StockType extends Model
 
     protected $fillable = [
         'name',
-        'type'
+        'decimals'
     ];
 
     public function stock()

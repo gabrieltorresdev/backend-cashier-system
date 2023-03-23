@@ -33,7 +33,7 @@ class ProductFactory extends Factory
             $stockType = StockType::inRandomOrder()->first();
 
             Stock::create([
-                'quantity' => $stockType->type === 'float' ? fake()->randomFloat(1, 0, 100) : fake()->randomFloat(0, 0, 100),
+                'quantity' => fake()->randomFloat($stockType->decimals, 0, 100),
                 'product_id' => $product->id,
                 'stock_type_id' => $stockType->id
             ]);

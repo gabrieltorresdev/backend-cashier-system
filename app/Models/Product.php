@@ -19,6 +19,11 @@ class Product extends Model
 
     public function transactions()
     {
-        return $this->belongsToMany(Transaction::class);
+        return $this->belongsToMany(Transaction::class)->withPivot('quantity');
+    }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
     }
 }

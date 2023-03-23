@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignUuid('product_id')
                 ->references('id')
                 ->on('products');
+            $table->unsignedFloat('quantity', 8, 4);
         });
     }
 
