@@ -17,6 +17,7 @@ use App\Http\Controllers\Dashboard\{
     GetCurrentOpenedCashRegisterController,
     OpenCashRegisterController,
     CloseCashRegisterController,
+    GetCashRegisterTransactionsController,
 };
 
 Route::middleware('guest')->group(function () {
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(EnsureUserIsActivated::class)->group(function () {
         Route::get('/opened-cash-register', GetCurrentOpenedCashRegisterController::class);
+        Route::get('/transactions', GetCashRegisterTransactionsController::class);
         Route::patch('/cash-register/close', CloseCashRegisterController::class);
         Route::patch('/cash-register/open', OpenCashRegisterController::class);
     });

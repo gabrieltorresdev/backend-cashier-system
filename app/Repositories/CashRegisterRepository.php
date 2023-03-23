@@ -58,4 +58,36 @@ class CashRegisterRepository extends BaseRepository
         return is_null($this->model->closed_at)
             && $this->model->update(['closed_at' => now()]);
     }
+
+    public function getTransactions(?string $transactionId = null, ?bool $finished = null): ?array
+    {
+        $transactions = $this->model->transactions();
+
+        if (!is_null($finished))
+            $transactions = $transactions->where('finished', $finished);
+
+        if ($transactionId)
+            $transactions = $transactions->where('id', $transactionId);
+
+        return $transactions
+            ->get()
+            ?->toArray();
+    }
+
+    public function getTotalTransactionsValues()
+    {
+        $transactions = $this->getTransactions(null, true);
+
+        return array_reduce(
+            $transactions,
+            function ($carry, $transaction) {
+                if (in_array($transaction['type'], ['withdrawal', 'return'])) {
+                    return bcsub($carry, $transaction['value'], 2);
+                }
+
+                return bcadd($carry, $transaction['value'], 2);
+            },
+            0
+        );
+    }
 }
