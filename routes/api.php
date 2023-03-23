@@ -7,27 +7,22 @@ use App\Http\Controllers\Auth\HandleUserActivationController;
 use App\Http\Controllers\Dashboard\GetDashboardDataController;
 use App\Http\Middleware\EnsureUserIsActivated;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+use App\Http\Controllers\Auth\{
+    GetAuthenticatedUserController,
+    HandleLoginController,
+    HandleLogoutController,
+    HandleUserActivationController
+};
 
 Route::middleware('guest')->group(function () {
-    Route::post('/login', HandleLoginController::class)->name('login.handle');
+    Route::post('/login', HandleLoginController::class);
 });
 
 Route::middleware('auth')->group(function () {
-    Route::patch('/user-activation', HandleUserActivationController::class)->name('user.activation.handle');
-    Route::post('/logout', HandleLogoutController::class)->name('logout.handle');
+    Route::patch('/user-activation', HandleUserActivationController::class);
+    Route::post('/logout', HandleLogoutController::class);
 
-    Route::get('/authenticated-user', GetAuthenticatedUserController::class)->name('user.authenticated');
+    Route::get('/authenticated-user', GetAuthenticatedUserController::class);
 
     Route::middleware(EnsureUserIsActivated::class)->group(function () {
         Route::get('/dashboard', GetDashboardDataController::class)->name('dashboard');

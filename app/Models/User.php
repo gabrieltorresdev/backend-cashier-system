@@ -69,43 +69,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(CashRegister::class);
     }
-
-    /**
-     * Finds the user by the given email or username
-     * @param string $emailOrUsername
-     * @return Collection
-     */
-    public static function findByEmailOrUsername(string $emailOrUsername): Collection
-    {
-        return collect(
-            self::where('email', '=', $emailOrUsername)
-                ->orWhere('username', '=', $emailOrUsername)
-                ->first()
-                ?->toArray()
-        );
-    }
-
-    public function getOpenedCashRegister(): Collection
-    {
-        $return = collect(
-            $this->cashRegisters
-                ->where('opened', '=', true)
-                ->last()
-                ?->toArray()
-        );
-
-        return $return->only([
-            'id',
-            'date_time',
-            'initial_balance',
-            'current_balance'
-        ]);
-    }
-
-    public function activate(): bool
-    {
-        return $this->update([
-            'activated' => true
-        ]);
-    }
 }

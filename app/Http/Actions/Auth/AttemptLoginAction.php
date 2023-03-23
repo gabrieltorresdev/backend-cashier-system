@@ -6,11 +6,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AttemptLoginAction
 {
-    public function __construct()
-    {
-    }
-
-    public static function execute(string $emailOrUsername, string $password): ?string
+    public function execute(string $emailOrUsername, string $password): ?string
     {
         $field = is_email($emailOrUsername) ? 'email' : 'username';
 

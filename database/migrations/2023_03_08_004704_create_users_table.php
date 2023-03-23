@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('password');
             $table->boolean('activated')->default(false);
+            $table->string('verification_code')->nullable();
             $table->foreignUuid('access_permission_id')->references('id')->on('access_permissions');
             $table->timestamps();
         });

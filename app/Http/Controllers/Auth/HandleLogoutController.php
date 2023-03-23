@@ -9,10 +9,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class HandleLogoutController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function __construct(
+        private Request $request
+    ) {
+    }
+
+    public function __invoke()
     {
         try {
             JWTAuth::invalidate(JWTAuth::parseToken());

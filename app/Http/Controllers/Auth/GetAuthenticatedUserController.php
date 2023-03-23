@@ -7,8 +7,16 @@ use Illuminate\Http\Request;
 
 class GetAuthenticatedUserController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __construct(
+        private Request $request
+    ) {
+    }
+
+    public function __invoke()
     {
-        return response_ok(200, ['user' => $request->user()]);
+        return response_ok(
+            message: __("custom.auth.user-returned-successfully"),
+            data: ['user' => $this->request->user()]
+        );
     }
 }

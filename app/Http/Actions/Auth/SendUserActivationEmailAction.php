@@ -4,21 +4,24 @@ namespace App\Http\Actions\Auth;
 
 use App\Models\User;
 use App\Notifications\SendActivationCodeEmail;
+use App\Repositories\UserRepository;
 
 class SendUserActivationEmailAction
 {
-    public function __construct()
-    {
+    public function __construct(
+        private UserRepository $userRepository
+    ) {
     }
 
-    public static function execute(string $email): void
+    public function execute(string $userId): bool
     {
-        $user = User::query()->firstWhere('email', '=', $email);
+        $this->userRepository->whereModel($userId);
         
-        $user->verification_code = verification_token();
+        if (!$this->userRepository->updateValidationToken())
+            return false;
 
-        $user->update();
+        $this->userRepository->sendValidationToken();
 
-        $user->notify(new SendActivationCodeEmail);
+        return true;
     }
 }

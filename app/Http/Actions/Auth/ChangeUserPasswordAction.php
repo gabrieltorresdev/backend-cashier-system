@@ -3,24 +3,20 @@
 namespace App\Http\Actions\Auth;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 
 class ChangeUserPasswordAction
 {
-    public function __construct()
-    {
-    }
-
-    public static function execute(
-        User $user,
+    public function execute(
+        UserRepository $userRepository,
         string $oldPassword,
         string $newPassword
-    ): bool
-    {
-        if (!Hash::check($oldPassword, $user->password)) return false;
+    ): bool {
+        if (!$userRepository->checkPassword($oldPassword)) return false;
 
-        $user->password = bcrypt($newPassword);
-        
-        return $user->update();
+        return $userRepository->update([
+            'password' => bcrypt($newPassword)
+        ]);
     }
 }
