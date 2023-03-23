@@ -13,6 +13,9 @@ use App\Http\Controllers\Auth\{
     HandleLogoutController,
     HandleUserActivationController
 };
+use App\Http\Controllers\Dashboard\{
+    GetCurrentOpenedCashRegisterController,
+};
 
 Route::middleware('guest')->group(function () {
     Route::post('/login', HandleLoginController::class);
@@ -25,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/authenticated-user', GetAuthenticatedUserController::class);
 
     Route::middleware(EnsureUserIsActivated::class)->group(function () {
-        Route::get('/dashboard', GetDashboardDataController::class)->name('dashboard');
+        Route::get('/opened-cash-register', GetCurrentOpenedCashRegisterController::class);
     });
 });
 
