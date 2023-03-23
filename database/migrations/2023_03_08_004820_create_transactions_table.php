@@ -15,7 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('cash_register_id')->references('id')->on('cash_registers');
             $table->string('type');
-            $table->decimal('value', 10, 2);
+            $table->unsignedFloat('value', 8, 4)->nullable();
+            // TODO: Criar command e cron para verificar todas as transações não finalizadas e apagar
+            $table->boolean('finished')->default(false);
             $table->text('note')->nullable();
             $table->timestamps();
         });
