@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\AccessPermission::factory(2)->create();
 
-        \App\Models\User::factory(2)->create();
-
         \App\Models\User::factory()->create([
             'name' => 'Admin User',
             'username' => 'admin',
@@ -30,12 +28,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@email.com',
         ]);
 
-        \App\Models\CashRegister::factory(2)->create();
+        \App\Models\CashRegister::factory(1)->create();
 
         \App\Models\StockType::factory(2)->create();
 
         \App\Models\Product::factory(2)->create();
 
-        \App\Models\Transaction::factory(2)->create();
+        // \App\Models\Transaction::factory(2)->create();
     }
 }
