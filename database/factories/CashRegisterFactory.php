@@ -21,7 +21,6 @@ class CashRegisterFactory extends Factory
         return [
             'initial_balance' => 0,
             'current_balance' => 300, // transactions->value sum
-            'date_time' => fake()->dateTimeThisMonth(),
             'user_id' => User::inRandomOrder()->pluck('id')->first()
         ];
     }

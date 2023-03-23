@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('cash_registers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users');
-            $table->dateTime('date_time');
-            $table->boolean('opened')->default(false);
-            $table->decimal('initial_balance', 10, 2);
-            $table->decimal('current_balance', 10, 2);
+            $table->dateTime('closed_at')->nullable();
+            $table->unsignedFloat('initial_balance', 8, 4);
+            $table->unsignedFloat('current_balance', 8, 4);
             $table->timestamps();
         });
     }

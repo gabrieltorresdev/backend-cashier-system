@@ -13,7 +13,7 @@ class CashRegister extends Model
     protected $fillable = [
         'initial_balance',
         'current_balance',
-        'date_time'
+        'closed_at'
     ];
 
     public function user()
