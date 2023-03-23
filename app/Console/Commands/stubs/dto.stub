@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}};
+
+use App\DTO\BaseDTO;
+
+class {{class}} extends BaseDTO
+{
+    public ?string $variable = null;
+}
